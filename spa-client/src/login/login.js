@@ -1,9 +1,16 @@
 import { useAuth0 } from "@auth0/auth0-react";
+import userManager from "../usermanager";
 
 const LoginButton = () => {
-  const { loginWithRedirect } = useAuth0();
+  const handleLogin = () => {
+    userManager.signinRedirect();
+  };
 
-  return <button onClick={() => loginWithRedirect()}>Log In</button>;
+  return (
+    <div>
+      <button onClick={handleLogin}>Login</button>
+    </div>
+  );
 };
 
 export default LoginButton;

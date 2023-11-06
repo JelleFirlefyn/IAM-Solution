@@ -2,6 +2,8 @@
 import "./App.css";
 import React, { useState, useEffect } from "react";
 import LoginButton from "./login/login";
+import LogoutButton from "./logout/logout";
+import Profile from "./profileinfo/profileinfo";
 
 function App() {
   const [items, setItems] = useState([]);
@@ -27,6 +29,8 @@ function App() {
         ))}
       </ul>
       <LoginButton></LoginButton>
+      <LogoutButton></LogoutButton>
+      <Profile></Profile>
     </div>
   );
 }
