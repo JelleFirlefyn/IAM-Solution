@@ -1,6 +1,7 @@
 // import logo from "./logo.svg";
 import "./App.css";
 import React, { useState, useEffect } from "react";
+import LoginButton from "./login/login";
 
 function App() {
   const [items, setItems] = useState([]);
@@ -25,6 +26,7 @@ function App() {
           <li key={item.id}>{item.name}</li>
         ))}
       </ul>
+      <LoginButton></LoginButton>
     </div>
   );
 }

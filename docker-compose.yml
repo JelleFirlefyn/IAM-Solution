@@ -1,0 +1,42 @@
+version: "3.8"
+
+services:
+  spa:
+    image: nginx:latest
+    volumes:
+      - ./spa/build:/usr/share/nginx/html:ro
+    ports:
+      - "3000:3000"
+    depends_on:
+      - api
+    networks:
+      - mynetwork
+
+  api:
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+    ports:
+      - "3001:3001"
+    environment:
+      # Replace placeholder values your-auth0-domain and your-api-audience with actual values from your Auth0 configuration.
+      - AUTH0_DOMAIN=your-auth0-domain
+      - AUTH0_AUDIENCE=your-api-audience
+    networks:
+      - mynetwork
+    depends_on:
+      - opa
+
+  opa:
+    image: openpolicyagent/opa:latest
+    volumes:
+      - ./opa/policies:/policies
+    ports:
+      - "8181:8181"
+    command: ["run", "--server", "--addr=localhost:8181", "/policies"]
+    networks:
+      - mynetwork
+
+networks:
+  mynetwork:
+    driver: bridge
