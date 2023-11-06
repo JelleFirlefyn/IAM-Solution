@@ -1,9 +1,10 @@
 // import logo from "./logo.svg";
 import "./App.css";
 import React, { useState, useEffect } from "react";
-import LoginButton from "./login/login";
-import LogoutButton from "./logout/logout";
-import Profile from "./profileinfo/profileinfo";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import LoginPage from "./components/LoginPage";
+import CallbackPage from "./components/CallbackPage";
+import userManager from "./services/usermanager";
 
 function App() {
   const [items, setItems] = useState([]);
@@ -20,17 +21,27 @@ function App() {
       });
   }, []);
 
+  userManager.getUser().then((user) => {
+    if (user) {
+      // You now have access to the identity token through user.id_token
+      console.log("Identity token", user.id_token);
+    }
+  });
+
   return (
     <div className="App">
-      <h1>SPA with API</h1>
-      <ul>
-        {items.map((item) => (
-          <li key={item.id}>{item.name}</li>
-        ))}
-      </ul>
-      <LoginButton></LoginButton>
-      <LogoutButton></LogoutButton>
-      <Profile></Profile>
+      <Router>
+        <Routes>
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/callback" element={<CallbackPage />} />
+        </Routes>
+        <h1>SPA with API</h1>
+        <ul>
+          {items.map((item) => (
+            <li key={item.id}>{item.name}</li>
+          ))}
+        </ul>
+      </Router>
     </div>
   );
 }

@@ -1,7 +1,8 @@
-import { useAuth0 } from "@auth0/auth0-react";
-import userManager from "../usermanager";
+// src/components/LoginPage.js
+import React from "react";
+import userManager from "../services/usermanager";
 
-const LoginButton = () => {
+function LoginPage() {
   const handleLogin = () => {
     userManager.signinRedirect();
   };
@@ -11,6 +12,6 @@ const LoginButton = () => {
       <button onClick={handleLogin}>Login</button>
     </div>
   );
-};
+}
 
-export default LoginButton;
+export default LoginPage;
