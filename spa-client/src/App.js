@@ -47,7 +47,10 @@ function App() {
           setItems(data);
         } else {
           // Handle the case where the user is not logged in or the token is expired
-          console.log("User not logged in or token expired.");
+          let errorText = [
+            { id: 1, name: "User not logged in or token expired." },
+          ];
+          setItems(errorText);
         }
       } catch (error) {
         console.error("Error fetching data: ", error);
