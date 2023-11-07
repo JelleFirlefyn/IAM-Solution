@@ -4,7 +4,7 @@ services:
   spa:
     image: nginx:latest
     volumes:
-      - ./spa/build:/usr/share/nginx/html:ro
+      - ./spa-client/build:/usr/share/nginx/html:ro
     ports:
       - "3000:3000"
     depends_on:
