@@ -5,8 +5,9 @@ services:
     image: nginx:latest
     volumes:
       - ./spa-client/build:/usr/share/nginx/html:ro
+      - ./path/to/your/default.conf:/etc/nginx/conf.d/default.conf:ro # Mount the custom Nginx config
     ports:
-      - "3000:3000"
+      - "3000:80"
     depends_on:
       - api
     networks:
