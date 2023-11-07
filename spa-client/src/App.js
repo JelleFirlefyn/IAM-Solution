@@ -33,7 +33,7 @@ function App() {
         const user = await userManager.getUser();
         if (user && user.id_token) {
           // Fetch items from the API with the access token in the Authorization header
-          const response = await fetch("http://192.168.0.157/:3001/items", {
+          const response = await fetch("http://192.168.0.157:3001/items", {
             headers: {
               Authorization: `Bearer ${user.id_token}`,
             },
