@@ -29,14 +29,9 @@ services:
       - opa
 
   opa:
-    image: openpolicyagent/opa:latest
-    volumes:
-      - ./opa/policies:/policies
+    build: ./opa # Dockerfile local dir
     ports:
       - "8181:8181"
-    command: ["run", "--server", "--addr=localhost:8181", "/policies"]
-    networks:
-      - mynetwork
 
 networks:
   mynetwork:
