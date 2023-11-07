@@ -1,11 +1,38 @@
-// server.js
 const express = require("express");
-const cors = require("cors");
-
+const cors = require("cors"); // You need to install cors with npm
 const app = express();
-const PORT = 3001;
+const { auth } = require("express-oauth2-jwt-bearer");
 
-app.use(cors());
+const PORT = process.env.PORT || 3001;
+
+const jwtCheck = auth({
+  audience: "jmdWNLf9mzZVgTXZn6fqd8NbN41QfnX6",
+  issuerBaseURL: "https://dev-wfk714pl0dln3oip.us.auth0.com/",
+  tokenSigningAlg: "RS256",
+});
+
+// Set up a whitelist and check against it:
+var whitelist = ["http://localhost:3000"]; // This is your client's URL
+var corsOptions = {
+  origin: function (origin, callback) {
+    if (whitelist.indexOf(origin) !== -1 || !origin) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  credentials: true, // This is important for cookies, authorization headers with HTTPS
+};
+
+// Then pass them to cors:
+app.use(cors(corsOptions));
+
+// enforce JWT check on all endpoints
+app.use(jwtCheck);
+
+app.get("/authorized", function (req, res) {
+  res.send("Secured Resource");
+});
 
 // Dummy Data
 const items = [

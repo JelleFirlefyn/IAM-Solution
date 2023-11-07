@@ -20,8 +20,8 @@ services:
       - "3001:3001"
     environment:
       # Replace placeholder values your-auth0-domain and your-api-audience with actual values from your Auth0 configuration.
-      - AUTH0_DOMAIN=your-auth0-domain
-      - AUTH0_AUDIENCE=your-api-audience
+      - AUTH0_DOMAIN=dev-wfk714pl0dln3oip.us.auth0.com
+      - AUTH0_AUDIENCE=6548be34c2d2afd0a0b1895b
     networks:
       - mynetwork
     depends_on:
