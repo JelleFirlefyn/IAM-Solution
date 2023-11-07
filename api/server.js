@@ -12,7 +12,7 @@ const jwtCheck = auth({
 });
 
 // Set up a whitelist and check against it:
-var whitelist = ["http://localhost:3000"]; // This is your client's URL
+var whitelist = ["http://192.168.0.157/:3000"]; // This is your client's URL
 var corsOptions = {
   origin: function (origin, callback) {
     if (whitelist.indexOf(origin) !== -1 || !origin) {
