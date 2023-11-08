@@ -30,6 +30,8 @@ services:
 
   opa:
     build: ./opa # Dockerfile local dir
+    volumes: 
+      - ./opa/policies:/app
     ports:
       - "8181:8181"
 
