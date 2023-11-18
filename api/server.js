@@ -6,7 +6,7 @@ const { exec } = require("child_process");
 const app = express();
 const PORT = process.env.PORT || 3001;
 
-const opaEndpoint = "http://192.168.0.218:8181/v1/data/main/allow";
+const opaEndpoint = "http://192.168.146.59:8181/v1/data/main/allow";
 
 const jwtCheck = auth({
   audience: "jmdWNLf9mzZVgTXZn6fqd8NbN41QfnX6",
@@ -32,10 +32,19 @@ app.use(jwtCheck);
 app.use(async (req, res, next) => {
   try {
     const token2 = req.get("Authorization");
+    const clientIp = req.ip; // Get the client's IP address
+    console.log("client ip: ", clientIp)
 
     // Construct the curl command
     console.log("Authorization Header:", token2);
-    const curlCommand = `curl -s -X POST -H "Content-Type: application/json" -d '{"input": {"attributes": {"request": {"http": {"headers": {"authorization": "${token2}"}}}}}}' ${opaEndpoint}`;
+    const curlCommand = `curl -s -X POST -H "Content-Type: application/json" -d '{"input": {"ip": "${clientIp}", "attributes": {"request": {"http": {"headers": {"authorization": "${token2}"}}}}}}' ${opaEndpoint}`;
+
+    // OLDDDDD test
+    // const token2 = req.get("Authorization");
+
+    // // Construct the curl command
+    // console.log("Authorization Header:", token2);
+    // const curlCommand = `curl -s -X POST -H "Content-Type: application/json" -d '{"input": {"attributes": {"request": {"http": {"headers": {"authorization": "${token2}"}}}}}}' ${opaEndpoint}`;
 
     // Execute the curl command
     exec(curlCommand, (error, stdout, stderr) => {
