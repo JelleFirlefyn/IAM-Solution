@@ -34,6 +34,8 @@ services:
       - ./opa/policies:/app
     ports:
       - "8181:8181"
+    networks:
+      - mynetwork
 
 networks:
   mynetwork:

@@ -1,9 +1,12 @@
 const express = require("express");
-const cors = require("cors"); // You need to install cors with npm
-const app = express();
+const cors = require("cors");
 const { auth } = require("express-oauth2-jwt-bearer");
+const { exec } = require("child_process");
 
+const app = express();
 const PORT = process.env.PORT || 3001;
+
+const opaEndpoint = "http://192.168.0.218:8181/v1/data/main/allow";
 
 const jwtCheck = auth({
   audience: "jmdWNLf9mzZVgTXZn6fqd8NbN41QfnX6",
@@ -11,9 +14,8 @@ const jwtCheck = auth({
   tokenSigningAlg: "RS256",
 });
 
-// Set up a whitelist and check against it:
-var whitelist = ["http://localhost:3000"]; // This is your client's URL
-var corsOptions = {
+const whitelist = ["http://localhost:3000"];
+const corsOptions = {
   origin: function (origin, callback) {
     if (whitelist.indexOf(origin) !== -1 || !origin) {
       callback(null, true);
@@ -21,20 +23,51 @@ var corsOptions = {
       callback(new Error("Not allowed by CORS"));
     }
   },
-  credentials: true, // This is important for cookies, authorization headers with HTTPS
+  credentials: true,
 };
 
-// Then pass them to cors:
 app.use(cors(corsOptions));
-
-// enforce JWT check on all endpoints
 app.use(jwtCheck);
 
-app.get("/authorized", function (req, res) {
-  res.send("Secured Resource");
+app.use(async (req, res, next) => {
+  try {
+    const token2 = req.get("Authorization");
+
+    // Construct the curl command
+    console.log("Authorization Header:", token2);
+    const curlCommand = `curl -s -X POST -H "Content-Type: application/json" -d '{"input": {"attributes": {"request": {"http": {"headers": {"authorization": "${token2}"}}}}}}' ${opaEndpoint}`;
+
+    // Execute the curl command
+    exec(curlCommand, (error, stdout, stderr) => {
+      if (error) {
+        console.error("Error during OPA authorization:", error.message);
+        res.status(500).json({ error: "Internal server error" });
+        return;
+      }
+
+      console.log("Curl Output:", stdout); // Log the curl command output
+
+      try {
+        const opaResponse = JSON.parse(stdout);
+
+        console.log("OPA Response:", opaResponse); // Log the parsed OPA response
+
+        if (opaResponse.result === true) {
+          next(); // Continue to the next middleware or route handler
+        } else {
+          res.status(403).json({ error: "Unauthorized" });
+        }
+      } catch (parseError) {
+        console.error("Error parsing OPA response:", parseError.message);
+        res.status(500).json({ error: "Internal server error" });
+      }
+    });
+  } catch (error) {
+    console.error("Error during OPA authorization:", error.message);
+    res.status(500).json({ error: "Internal server error" });
+  }
 });
 
-// Dummy Data
 const items = [
   { id: 1, name: "Item 1" },
   { id: 2, name: "Item 2" },
