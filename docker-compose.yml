@@ -1,0 +1,42 @@
+version: "3.8"
+
+services:
+  spa:
+    image: nginx:latest
+    volumes:
+      - ./spa-client/build:/usr/share/nginx/html:ro
+      - ./spa-client/default.conf:/etc/nginx/conf.d/default.conf:ro # Mount the custom Nginx config
+    ports:
+      - "3000:80"
+    depends_on:
+      - api
+    networks:
+      - mynetwork
+
+  api:
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+    ports:
+      - "3001:3001"
+    environment:
+      # Replace placeholder values your-auth0-domain and your-api-audience with actual values from your Auth0 configuration.
+      - AUTH0_DOMAIN=dev-wfk714pl0dln3oip.us.auth0.com
+      - AUTH0_AUDIENCE=6548be34c2d2afd0a0b1895b
+    networks:
+      - mynetwork
+    depends_on:
+      - opa
+
+  opa:
+    build: ./opa # Dockerfile local dir
+    volumes: 
+      - ./opa/policies:/app
+    ports:
+      - "8181:8181"
+    networks:
+      - mynetwork
+
+networks:
+  mynetwork:
+    driver: bridge
