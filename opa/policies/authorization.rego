@@ -10,7 +10,7 @@ allow {
 }
 
 valid_ip(ip) {
-    allowed_ips := {"127.0.0.1", "192.168.146.59", "172.20.0.1"}  # Replace with your allowed IPs
+    allowed_ips := {"::ffff:127.0.0.1", "::ffff:192.168.146.59", "::ffff:172.17.0.1", "::ffff:172.18.0.1", "::ffff:172.19.0.1", "::ffff:172.20.0.1", "::ffff:172.21.0.1", "::ffff:172.22.0.1", "::ffff:172.23.0.1", "::ffff:172.24.0.1"}  # Relace with your allowed IPs
     allowed_ips[ip]
 }
 claims := payload {
