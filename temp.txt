@@ -1,7 +1,0 @@
-{"addrs":[":8181"],"diagnostic-addrs":[],"level":"info","msg":"Initializing server.","time":"2023-11-18T19:13:26Z"}
-iam-solution-opa-1  | {"client_addr":"172.19.0.1:40032","level":"info","msg":"Received request.","req_id":1,"req_method":"POST","req_path":"/v1/data/main/allow","time":"2023-11-18T19:13:32Z"}
-iam-solution-opa-1  | {"client_addr":"172.19.0.1:40032","level":"info","msg":"Sent response.","req_id":1,"req_method":"POST","req_path":"/v1/data/main/allow","resp_bytes":16,"resp_duration":23.568331,"resp_status":200,"time":"2023-11-18T19:13:32Z"}
-
-{"addrs":[":8181"],"diagnostic-addrs":[],"level":"info","msg":"Initializing server.","time":"2023-11-18T19:13:26Z"}
-iam-solution-opa-1  | {"client_addr":"172.19.0.1:40032","level":"info","msg":"Received request.","req_id":1,"req_method":"POST","req_path":"/v1/data/main/allow","time":"2023-11-18T19:13:32Z"}
-iam-solution-opa-1  | {"client_addr":"172.19.0.1:40032","level":"info","msg":"Sent response.","req_id":1,"req_method":"POST","req_path":"/v1/data/main/allow","resp_bytes":16,"resp_duration":23.568331,"resp_status":200,"time":"2023-11-18T19:13:32Z"}
