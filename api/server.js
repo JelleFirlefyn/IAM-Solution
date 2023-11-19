@@ -6,6 +6,8 @@ const { exec } = require("child_process");
 const app = express();
 const PORT = process.env.PORT || 3001;
 
+// Verander hier het IP naar dat van uw machine
+// dit omdat localhost niet werkt
 const opaEndpoint = "http://192.168.146.59:8181/v1/data/main/allow";
 
 const jwtCheck = auth({
@@ -38,13 +40,6 @@ app.use(async (req, res, next) => {
     // Construct the curl command
     console.log("Authorization Header:", token2);
     const curlCommand = `curl -s -X POST -H "Content-Type: application/json" -d '{"input": {"ip": "${clientIp}", "attributes": {"request": {"http": {"headers": {"authorization": "${token2}"}}}}}}' ${opaEndpoint}`;
-
-    // OLDDDDD test
-    // const token2 = req.get("Authorization");
-
-    // // Construct the curl command
-    // console.log("Authorization Header:", token2);
-    // const curlCommand = `curl -s -X POST -H "Content-Type: application/json" -d '{"input": {"attributes": {"request": {"http": {"headers": {"authorization": "${token2}"}}}}}}' ${opaEndpoint}`;
 
     // Execute the curl command
     exec(curlCommand, (error, stdout, stderr) => {
